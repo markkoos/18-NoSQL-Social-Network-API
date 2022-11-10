@@ -96,7 +96,7 @@ module.exports = {
                     ? res
                         .status(404)
                         .json({ message: `No user found with that id` })
-                    : res.json(user)
+                    : res.json({message: `delete was successful`})
             )
             .catch((err) => res.status(500).json(err))
     }
