@@ -1,4 +1,8 @@
-const express = require(`express`);
-const db = require(`./config/connection.js`);
-const routes = require(`./routes`);
+const router = require(`express`).Router();
+const apiRoutes = require(`./api`);
+
+router.use(`/api`, apiRoutes);
+
+module.exports = router;
+
 
