@@ -11,7 +11,7 @@ const userCount = async () => {
 module.exports = {
     // gets all users
     getUsers(req, res) {
-        User.find()
+        User.find({})
             .then(async (users) => {
                 const userObj = {
                     users,
@@ -48,7 +48,7 @@ module.exports = {
     updateUser(req, res) {
         User.findOneAndUpdate(
             { _id: req.params.userId },
-            { $addtoSet: { username: req.body } },
+            { $set: { username: req.body.username, email: req.body.email} },
             { runValidators: true, new: true},
             )
             .then((user) => 
@@ -60,7 +60,7 @@ module.exports = {
     },
     // remove user by id
     removeUser(req, res) {
-        User.findOneAndDelete({ _id: req.pararms.userId })
+        User.findOneAndDelete({ _id: req.params.userId })
             .then((user) => 
                 !user
                     ? res.status(404).json({ message: `Can't find user with that ID` })
@@ -72,7 +72,7 @@ module.exports = {
     addFriend(req, res) {
         User.findOneAndUpdate(
             { _id: req.params.userId },
-            { $addtoSet: { friends: req.body } },
+            { $push: { friends: req.params.friendId } },
             { runValidators: true, new: true },
         )
             .then((user) => {

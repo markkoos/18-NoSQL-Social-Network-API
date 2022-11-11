@@ -3,7 +3,7 @@ const { User, Thought } = require(`../models`);
 module.exports = {
     // gets all thoughts
     getThoughts(req, res) {
-        Thought.find()
+        Thought.find({})
             .then((thoughts) => res.json(thoughts))
             .catch((err) => res.status(500).json(err))
     },
@@ -28,7 +28,7 @@ module.exports = {
     updateThought(req, res) {
         Thought.findOneAndUpdate(
             { _id: req.params.thoughtId },
-            { $addtoSet: { thoughtText: req.body } },
+            { $set: { thoughtText: req.body.thoughtText } },
             { runValidators: true, new: true},
         )
         .then((thought) => 
@@ -51,7 +51,7 @@ module.exports = {
     postReaction(req, res) {
         Thought.findOneAndUpdate(
             {_id: req.params.thoughtId},
-            {$addToSet: {reactions: req.body } },
+            {$push: { reactions: req.body } },
             {runValidators: true, new: true,},
             )
                 .then((reaction) => 
